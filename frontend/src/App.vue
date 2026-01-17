@@ -96,14 +96,14 @@ const projects = [
     title: 'SBOM 管理系统', 
     desc: '软件成分清单（SBOM）管理平台，支持组件依赖解析、漏洞扫描、许可证合规检测与可视化报告生成。', 
     tags: ['SpringBoot', 'Vue3', 'MySQL', 'CycloneDX'],
-    media: 'images/SBOM.mov',
+    media: 'images/SBOM.mp4',
     type: 'video'
   },
   { 
     title: '智能家居物联网管理系统', 
     desc: '家居物联网设备管控中心，支持设备接入、状态监控、远程控制、场景联动与数据统计分析。', 
     tags: ['SpringBoot', 'Vue3', 'MQTT', 'EMQ'],
-    media: 'images/iot.mov',
+    media: 'images/iot.mp4',
     type: 'video'
   }
 ]
