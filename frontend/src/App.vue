@@ -63,6 +63,18 @@ const closeVideoDialog = () => {
   currentVideoTitle.value = ''
 }
 
+// 视频预览优化：悬停播放
+const playVideo = (event: MouseEvent) => {
+  const video = event.target as HTMLVideoElement
+  video.play().catch(() => {})
+}
+
+const pauseVideo = (event: MouseEvent) => {
+  const video = event.target as HTMLVideoElement
+  video.pause()
+  video.currentTime = 0
+}
+
 const services = [
   { 
     title: 'Web 系统开发', 
@@ -179,15 +191,18 @@ const projects = [
               :src="p.media" 
               :alt="p.title" 
               class="project-image" 
+              loading="lazy"
             />
             <video 
               v-else 
               :src="p.media" 
               class="project-video" 
-              autoplay 
               loop 
               muted 
               playsinline
+              preload="metadata"
+              @mouseenter="playVideo"
+              @mouseleave="pauseVideo"
             ></video>
             <div class="preview-overlay">
               <el-icon class="play-icon" v-if="p.type === 'video'"><VideoPlay /></el-icon>
@@ -748,7 +763,6 @@ const projects = [
     display: flex;
     flex-direction: column;
     position: relative;
-    group: card;
 
     &:hover {
       transform: translateY(-8px);
