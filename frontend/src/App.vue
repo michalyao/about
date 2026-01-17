@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { ref, reactive } from 'vue'
+
 import { 
   Monitor, 
   Iphone, 
   Platform, 
   Message, 
   Promotion,
-  Notebook
+  Notebook,
+  CopyDocument
 } from '@element-plus/icons-vue'
-import type { FormInstance, FormRules } from 'element-plus'
 import { ElMessage } from 'element-plus'
 
 const scrollTo = (id: string) => {
@@ -16,6 +16,14 @@ const scrollTo = (id: string) => {
   if (el) {
     el.scrollIntoView({ behavior: 'smooth' })
   }
+}
+
+const copyQQ = () => {
+  navigator.clipboard.writeText('735287645').then(() => {
+    ElMessage.success('QQ 号码已复制到剪贴板！')
+  }).catch(() => {
+    ElMessage.error('复制失败，请手动输入：735287645')
+  })
 }
 
 const services = [
@@ -59,32 +67,6 @@ const projects = [
     bg: 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%)'
   }
 ]
-
-// Contact Form
-const formRef = ref<FormInstance>()
-const form = reactive({
-  name: '',
-  contact: '',
-  content: ''
-})
-
-const rules = reactive<FormRules>({
-  name: [{ required: true, message: '请输入您的称呼', trigger: 'blur' }],
-  contact: [{ required: true, message: '请输入联系方式（微信/QQ/手机）', trigger: 'blur' }],
-  content: [{ required: true, message: '请输入咨询内容', trigger: 'blur' }],
-})
-
-const submitForm = async (formEl: FormInstance | undefined) => {
-  if (!formEl) return
-  await formEl.validate((valid, fields) => {
-    if (valid) {
-      ElMessage.success('消息已发送，我会通过微信/QQ联系您！')
-      formEl.resetFields()
-    } else {
-      console.log('error submit!', fields)
-    }
-  })
-}
 </script>
 
 <template>
@@ -170,44 +152,34 @@ const submitForm = async (formEl: FormInstance | undefined) => {
     <section id="contact" class="section">
       <h2 class="section-title">联系我</h2>
       <div class="contact-container">
-        <div class="contact-info">
-          <div class="info-item">
-            <h3>🤝 合作流程</h3>
-            <el-timeline>
-              <el-timeline-item timestamp="Step 1" placement="top">
-                <h4>需求沟通</h4>
-                <p>确认功能需求、技术栈、交付时间</p>
-              </el-timeline-item>
-              <el-timeline-item timestamp="Step 2" placement="top">
-                <h4>开发实现</h4>
-                <p>定期汇报进度，查看阶段性成果</p>
-              </el-timeline-item>
-              <el-timeline-item timestamp="Step 3" placement="top">
-                <h4>交付验收</h4>
-                <p>源码交付、部署调试、远程协助</p>
-              </el-timeline-item>
-            </el-timeline>
-          </div>
+        <div class="contact-card">
+          <h3>🤝 合作流程</h3>
+          <el-timeline>
+            <el-timeline-item timestamp="Step 1" placement="top">
+              <h4>添加 QQ 咨询</h4>
+              <p>请备注 "毕业设计" 以便快速通过</p>
+            </el-timeline-item>
+            <el-timeline-item timestamp="Step 2" placement="top">
+              <h4>需求沟通</h4>
+              <p>确认功能需求、技术栈、交付时间与报价</p>
+            </el-timeline-item>
+            <el-timeline-item timestamp="Step 3" placement="top">
+              <h4>开发与交付</h4>
+              <p>定期汇报进度，满意后交付源码与文档</p>
+            </el-timeline-item>
+          </el-timeline>
         </div>
         
-        <div class="contact-form-card">
-          <h3>快速留言</h3>
-          <el-form ref="formRef" :model="form" :rules="rules" status-icon label-position="top">
-            <el-form-item label="您的称呼" prop="name">
-              <el-input v-model="form.name" placeholder="同学 / 先生 / 女士" />
-            </el-form-item>
-            <el-form-item label="联系方式" prop="contact">
-              <el-input v-model="form.contact" placeholder="微信 ID 或 QQ 号" />
-            </el-form-item>
-            <el-form-item label="需求描述" prop="content">
-              <el-input v-model="form.content" type="textarea" :rows="4" placeholder="简要描述您的需求..." />
-            </el-form-item>
-            <el-form-item>
-              <el-button type="primary" style="width: 100%" @click="submitForm(formRef)">
-                发送消息
-              </el-button>
-            </el-form-item>
-          </el-form>
+        <div class="contact-card qq-card">
+          <h3>立即联系</h3>
+          <div class="qq-content">
+             <div class="qq-label">QQ 号码</div>
+             <div class="qq-number">735287645</div>
+             <el-button type="primary" size="large" :icon="CopyDocument" round class="copy-btn" @click="copyQQ">
+               点击复制号码
+             </el-button>
+             <p class="qq-tip">全天在线，欢迎随时咨询</p>
+          </div>
         </div>
       </div>
     </section>
@@ -444,18 +416,57 @@ const submitForm = async (formEl: FormInstance | undefined) => {
     grid-template-columns: 1fr 1fr;
   }
 
-  .contact-info {
-    padding: 20px;
-  }
-
-  .contact-form-card {
+  .contact-card {
     background: rgba(255, 255, 255, 0.03);
-    padding: 30px;
+    padding: 40px;
     border-radius: 16px;
     border: 1px solid rgba(255, 255, 255, 0.05);
 
     h3 {
-      margin-bottom: 24px;
+      margin-bottom: 30px;
+      font-size: 1.5rem;
+    }
+  }
+
+  .qq-card {
+    display: flex;
+    flex-direction: column;
+
+    .qq-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      flex: 1;
+      width: 100%;
+      box-sizing: border-box;
+      background: rgba(64, 158, 255, 0.05);
+      border-radius: 12px;
+      padding: 30px;
+      border: 1px dashed rgba(64, 158, 255, 0.2);
+    }
+
+    .qq-label {
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      font-size: 0.875rem;
+      color: #8b949e;
+      margin-bottom: 12px;
+    }
+
+    .qq-number {
+      font-size: 3rem;
+      font-weight: 900;
+      color: #409eff;
+      margin-bottom: 30px;
+      font-family: 'SF Mono', 'Roboto Mono', monospace;
+      text-shadow: 0 0 30px rgba(64, 158, 255, 0.2);
+    }
+
+    .qq-tip {
+      margin-top: 20px;
+      font-size: 0.9rem;
+      color: #8b949e;
     }
   }
 }
