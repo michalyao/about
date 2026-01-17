@@ -3,7 +3,6 @@
 import { 
   Monitor, 
   Iphone, 
-  Platform, 
   Message, 
   Promotion,
   Notebook,
@@ -52,19 +51,19 @@ const projects = [
     title: '校园智慧点餐系统', 
     desc: '基于 SpringBoot + Vue 的前后端分离点餐平台，包含用户端、商户端和骑手端。', 
     tags: ['SpringBoot', 'Vue3', 'MySQL'],
-    bg: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+    image: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&h=400&fit=crop'
   },
   { 
     title: '个人财务可视化大屏', 
     desc: 'Python 数据分析项目，通过 Echarts 实现多维度财务数据可视化展示。', 
     tags: ['Python', 'Echarts', 'DataAnalysis'],
-    bg: 'linear-gradient(135deg, #2af598 0%, #009efd 100%)'
+    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=600&h=400&fit=crop'
   },
   { 
     title: '二手图书交易小程序', 
     desc: '校园二手书循环利用平台，支持扫码发布、即时通讯、线下交易。', 
     tags: ['Uni-app', 'Node.js', 'MongoDB'],
-    bg: 'linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%)'
+    image: 'https://images.unsplash.com/photo-1507842217343-583bb7270b66?w=600&h=400&fit=crop'
   }
 ]
 </script>
@@ -88,6 +87,7 @@ const projects = [
     <!-- Hero Section -->
     <section id="home" class="hero">
       <div class="hero-content">
+        <div class="hero-badge-top">🚀 专业毕设开发</div>
         <h1 class="hero-title">
           让想法变成 <span class="highlight">现实</span>
         </h1>
@@ -109,6 +109,7 @@ const projects = [
         </div>
       </div>
       <div class="hero-bg-glow"></div>
+      <div class="hero-bg-glow-secondary"></div>
     </section>
 
     <!-- Services -->
@@ -131,11 +132,9 @@ const projects = [
       <h2 class="section-title">精选作品</h2>
       <div class="portfolio-grid">
         <div v-for="p in projects" :key="p.title" class="project-card">
-          <div class="project-preview" :style="{ background: p.bg }">
-            <!-- Optional: Replace with img tag later -->
-            <div class="preview-overlay">
-              <Platform style="width: 48px; height: 48px; color: white; opacity: 0.8;" />
-            </div>
+          <div class="project-preview">
+            <img :src="p.image" :alt="p.title" class="project-image" />
+            <div class="preview-overlay"></div>
           </div>
           <div class="project-info">
             <h3>{{ p.title }}</h3>
@@ -194,10 +193,25 @@ const projects = [
 .main-container {
   width: 100%;
   min-height: 100vh;
-  background-color: #0d1117;
+  background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #0d1117 100%);
   color: #e6edf3;
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   overflow-x: hidden;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+      radial-gradient(ellipse at 20% 20%, rgba(64, 158, 255, 0.08) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 80%, rgba(103, 194, 58, 0.05) 0%, transparent 50%);
+    pointer-events: none;
+    z-index: 0;
+  }
 }
 
 .navbar {
@@ -298,16 +312,62 @@ const projects = [
     justify-content: center;
   }
 
+  .hero-badge-top {
+    display: inline-block;
+    padding: 8px 20px;
+    background: rgba(64, 158, 255, 0.15);
+    border: 1px solid rgba(64, 158, 255, 0.3);
+    border-radius: 50px;
+    font-size: 0.9rem;
+    color: #a0cfff;
+    margin-bottom: 24px;
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+
   .hero-bg-glow {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 600px;
-    height: 600px;
-    background: radial-gradient(circle, rgba(64, 158, 255, 0.15) 0%, transparent 70%);
+    width: 800px;
+    height: 800px;
+    background: radial-gradient(circle, rgba(64, 158, 255, 0.2) 0%, transparent 60%);
     z-index: 1;
     pointer-events: none;
+    animation: pulse 4s ease-in-out infinite;
+  }
+
+  .hero-bg-glow-secondary {
+    position: absolute;
+    top: 60%;
+    left: 70%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 500px;
+    background: radial-gradient(circle, rgba(103, 194, 58, 0.1) 0%, transparent 60%);
+    z-index: 1;
+    pointer-events: none;
+    animation: pulse 5s ease-in-out infinite 1s;
+  }
+
+  @keyframes pulse {
+    0%, 100% {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+    }
+    50% {
+      transform: translate(-50%, -50%) scale(1.15);
+      opacity: 0.6;
+    }
   }
 }
 
@@ -326,43 +386,82 @@ const projects = [
 
 .services-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 30px;
 
   .service-card {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    padding: 30px;
-    border-radius: 16px;
-    transition: transform 0.3s, background 0.3s;
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 32px;
+    border-radius: 20px;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(64, 158, 255, 0.1) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.4s ease;
+    }
     
     &:hover {
-      transform: translateY(-5px);
-      background: rgba(255, 255, 255, 0.06);
+      transform: translateY(-8px) scale(1.02);
+      border-color: rgba(64, 158, 255, 0.3);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3), 0 0 30px rgba(64, 158, 255, 0.1);
+
+      &::before {
+        opacity: 1;
+      }
+
+      .icon-box {
+        transform: scale(1.1) rotate(5deg);
+        box-shadow: 0 0 30px rgba(64, 158, 255, 0.4);
+      }
     }
 
     .icon-box {
-      width: 50px;
-      height: 50px;
-      margin-bottom: 20px;
-      color: #409eff;
+      width: 60px;
+      height: 60px;
+      margin-bottom: 24px;
+      padding: 14px;
+      background: linear-gradient(135deg, #409eff 0%, #66b1ff 100%);
+      border-radius: 14px;
+      color: white;
+      transition: all 0.4s ease;
+      box-shadow: 0 8px 20px rgba(64, 158, 255, 0.3);
     }
 
     h3 {
       font-size: 1.5rem;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
+      font-weight: 600;
+      background: linear-gradient(135deg, #fff 0%, #a0cfff 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
 
     p {
       color: #8b949e;
-      line-height: 1.6;
-      margin-bottom: 20px;
+      line-height: 1.7;
+      margin-bottom: 24px;
+      font-size: 0.95rem;
     }
 
     .price {
       font-weight: 700;
       color: #67c23a;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
+      display: inline-block;
+      padding: 6px 14px;
+      background: rgba(103, 194, 58, 0.1);
+      border-radius: 8px;
+      border: 1px solid rgba(103, 194, 58, 0.2);
     }
   }
 }
@@ -376,13 +475,44 @@ const projects = [
     background: #161b22;
     border-radius: 16px;
     overflow: hidden;
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+
+    &:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+
+      .project-image {
+        transform: scale(1.1);
+      }
+
+      .preview-overlay {
+        opacity: 0.3;
+      }
+    }
 
     .project-preview {
-      height: 200px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      height: 220px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-image {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .preview-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(180deg, transparent 0%, rgba(22, 27, 34, 0.8) 100%);
+      opacity: 0.6;
+      transition: opacity 0.4s ease;
     }
 
     .project-info {
@@ -391,12 +521,14 @@ const projects = [
       h3 {
         font-size: 1.25rem;
         margin-bottom: 8px;
+        font-weight: 600;
       }
 
       p {
         color: #8b949e;
         margin-bottom: 16px;
         font-size: 0.9rem;
+        line-height: 1.6;
       }
 
       .tags {
