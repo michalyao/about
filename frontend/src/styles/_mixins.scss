@@ -1,0 +1,84 @@
+@use 'sass:math';
+@use 'sass:map';
+
+// Breakpoints
+$breakpoints: (
+    'sm': 640px,
+    'md': 768px,
+    'lg': 1024px,
+    'xl': 1280px,
+    '2xl': 1536px
+);
+
+@mixin xs {
+    @media (max-width: #{map.get($breakpoints, 'sm') - 1px}) {
+        @content;
+    }
+}
+
+@mixin sm {
+    @media (min-width: #{map.get($breakpoints, 'sm')}) {
+        @content;
+    }
+}
+
+@mixin md {
+    @media (min-width: #{map.get($breakpoints, 'md')}) {
+        @content;
+    }
+}
+
+@mixin lg {
+    @media (min-width: #{map.get($breakpoints, 'lg')}) {
+        @content;
+    }
+}
+
+@mixin xl {
+    @media (min-width: #{map.get($breakpoints, 'xl')}) {
+        @content;
+    }
+}
+
+// Flexbox Helpers
+@mixin flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@mixin flex-between {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+@mixin flex-col {
+    display: flex;
+    flex-direction: column;
+}
+
+// Visual Effects
+@mixin glass-effect {
+    background: var(--bg-glass);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border-light);
+}
+
+@mixin hover-lift {
+    transition: transform var(--transition-base), box-shadow var(--transition-base);
+    will-change: transform, box-shadow;
+
+    &:hover {
+        transform: translateY(-4px);
+        box-shadow: var(--shadow-lg);
+    }
+}
+
+@mixin text-gradient {
+    background: linear-gradient(135deg, var(--color-primary-light) 0%, var(--color-accent-light) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}

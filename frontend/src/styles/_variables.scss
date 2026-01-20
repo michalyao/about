@@ -1,0 +1,72 @@
+/* Design System Tokens */
+:root {
+  /* -------------------------
+   * COLOR PALETTE (Semantic)
+   * ------------------------- */
+  --color-primary: #3b82f6;
+  --color-primary-light: #60a5fa;
+  --color-primary-dark: #1e40af;
+  --color-primary-fade: rgba(59, 130, 246, 0.1);
+  
+  --color-accent: #8b5cf6;
+  --color-accent-light: #a78bfa;
+  
+  --color-success: #10b981;
+  --color-warning: #f59e0b;
+  --color-danger: #ef4444;
+
+  /* Backgrounds */
+  --bg-deep: #0f172a;      /* Main background */
+  --bg-surface: #1e293b;   /* Cards/Sections */
+  --bg-surface-hover: #334155;
+  --bg-glass: rgba(15, 23, 42, 0.7);
+  
+  /* Text */
+  --text-main: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-tertiary: #64748b;
+  --text-invert: #0f172a;
+
+  /* Borders */
+  --border-light: rgba(148, 163, 184, 0.1);
+  --border-hover: rgba(148, 163, 184, 0.2);
+  --border-focus: rgba(59, 130, 246, 0.5);
+
+  /* -------------------------
+   * SPACING (8pt Grid)
+   * ------------------------- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 16px;   /* Base unit */
+  --space-4: 24px;
+  --space-5: 32px;
+  --space-6: 48px;
+  --space-8: 64px;
+  --space-12: 96px;  /* Section spacing */
+  --space-16: 128px;
+
+  /* -------------------------
+   * SHADOWS & ELEVATION
+   * ------------------------- */
+  --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-glow: 0 0 20px rgba(59, 130, 246, 0.3);
+
+  /* -------------------------
+   * RADIUS
+   * ------------------------- */
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-full: 9999px;
+  
+  /* -------------------------
+   * ANIMATIONS
+   * ------------------------- */
+  --transition-fast: 0.15s ease;
+  --transition-base: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  --transition-smooth: 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
