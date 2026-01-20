@@ -377,7 +377,9 @@ const projects = [
     border-radius: 0;
     border: none;
     border-bottom: 1px solid var(--border-color);
-    padding: 0 20px;
+    padding: 0 16px;
+    gap: 12px;
+    box-sizing: border-box;
     
     &:hover {
       transform: none;
@@ -403,6 +405,8 @@ const projects = [
     
     @media (max-width: 768px) {
       border-right: none;
+      padding-right: 0;
+      font-size: 1.1rem;
     }
   }
 
@@ -464,6 +468,11 @@ const projects = [
       transform: translateY(-1px);
       box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
       background: #fff;
+    }
+
+    @media (max-width: 768px) {
+      padding: 6px 14px;
+      font-size: 0.8rem;
     }
   }
 }
