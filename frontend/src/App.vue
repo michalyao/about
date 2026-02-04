@@ -87,13 +87,7 @@ const services = [
     desc: '微信小程序、H5 应用、跨端 APP 开发。技术栈：Uni-app, Taro', 
     icon: Iphone,
     price: '¥800 起'
-  },
-  { 
-    title: '毕业设计辅导', 
-    desc: '从选题开题到答辩全流程指导，源码讲解，文档撰写辅助', 
-    icon: Notebook,
-    price: '咨询报价'
-  },
+  }
 ]
 
 const projects = [
@@ -157,12 +151,12 @@ onMounted(() => {
     <!-- Hero Section -->
     <section id="home" class="hero">
       <div class="hero-content">
-        <div class="hero-badge-top">🚀 专业毕设开发</div>
+        <div class="hero-badge-top">🚀 专业开发</div>
         <h1 class="hero-title">
           让想法变成 <span class="highlight">现实</span>
         </h1>
         <p class="hero-subtitle">
-          专注大学生毕业设计辅导 | 全栈开发 | 技术咨询
+          专注大学生程序辅导 | 全栈开发 | 技术咨询
         </p>
         <div class="hero-badges">
           <el-tag effect="dark" round>⚡️ 快速交付</el-tag>
@@ -246,7 +240,7 @@ onMounted(() => {
           <el-timeline>
             <el-timeline-item timestamp="Step 1" placement="top">
               <h4>添加 QQ 咨询</h4>
-              <p>请备注 "毕业设计" 以便快速通过</p>
+              <p>请备注 "计算机单子" 以便快速通过</p>
             </el-timeline-item>
             <el-timeline-item timestamp="Step 2" placement="top">
               <h4>需求沟通</h4>
@@ -274,7 +268,7 @@ onMounted(() => {
     </section>
 
     <footer class="footer">
-      <p>© 2026 YAO.DEV | 专注于高质量毕业设计与软件开发</p>
+      <p>© 2026 YAO.DEV | 专注于高质量程序设计与软件开发</p>
     </footer>
 
     <!-- 视频播放弹窗 -->
