@@ -6,7 +6,6 @@ import {
   Iphone, 
   Message, 
   Promotion,
-  Notebook,
   CopyDocument,
   Close,
   VideoPlay
