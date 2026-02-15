@@ -86,6 +86,12 @@ const services = [
     desc: '微信小程序、H5 应用、跨端 APP 开发。技术栈：Uni-app, Taro', 
     icon: Iphone,
     price: '¥800 起'
+  },
+  { 
+    title: '毕业设计/AI Coding 1V1 辅导', 
+    desc: '毕业设计全程指导、代码讲解、AI 编程技巧培训、技术答疑。一对一定制化辅导', 
+    icon: Promotion,
+    price: '收费咨询'
   }
 ]
 
