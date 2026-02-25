@@ -27,6 +27,10 @@ const copyQQ = () => {
   })
 }
 
+// 图片大图预览状态
+const imageViewerVisible = ref(false)
+const currentImage = ref('')
+
 // 视频弹窗状态
 const videoDialogVisible = ref(false)
 const currentVideo = ref('')
@@ -35,18 +39,9 @@ const currentVideoTitle = ref('')
 // 项目点击处理
 const handleProjectClick = (project: typeof projects[0]) => {
   if (project.type === 'image') {
-    // 图片类型：弹出 QQ 提示
-    ElMessageBox.confirm(
-      '如需查看完整演示，请添加 QQ 咨询',
-      project.title,
-      {
-        confirmButtonText: '复制 QQ 号码',
-        cancelButtonText: '取消',
-        type: 'info',
-      }
-    ).then(() => {
-      copyQQ()
-    }).catch(() => {})
+    // 图片类型：查看大图
+    currentImage.value = project.media
+    imageViewerVisible.value = true
   } else {
     // 视频类型：弹出视频播放器
     currentVideo.value = project.media
@@ -116,6 +111,20 @@ const projects = [
     tags: ['SpringBoot', 'Vue3', 'MQTT', 'EMQ'],
     media: 'images/iot.mp4',
     type: 'video'
+  },
+  {
+    title: '微信小程序-老年健身社区平台',
+    desc: '专注老年人健康生活的线上社区，提供健身课程、健康档案管理及交友互动功能。',
+    tags: ['SpringBoot', 'Vue3', 'MySQL', 'MyBatis-Plus'],
+    media: 'images/老年健身社区平台.png',
+    type: 'image'
+  },
+  {
+    title: '智慧旅游平台',
+    desc: '一站式智慧旅游服务平台，支持景点门票预订、旅游路线推荐及攻略分享。',
+    tags: ['SpringBoot', 'Vue3', 'MySQL', 'Redis'],
+    media: 'images/智慧旅游平台.png',
+    type: 'image'
   }
 ]
 
@@ -275,6 +284,22 @@ onMounted(() => {
     <footer class="footer">
       <p>© 2026 YAO.DEV | 专注于高质量程序设计与软件开发</p>
     </footer>
+
+    <!-- 图片预览弹窗 -->
+    <Teleport to="body">
+      <div v-if="imageViewerVisible" class="video-modal image-preview-modal" @click.self="imageViewerVisible = false">
+        <div class="video-modal-content image-modal-content">
+          <div class="video-modal-header image-modal-header">
+            <el-button type="danger" circle :icon="Close" @click="imageViewerVisible = false" />
+          </div>
+          <img 
+            :src="currentImage" 
+            class="modal-image" 
+            alt="Preview"
+          />
+        </div>
+      </div>
+    </Teleport>
 
     <!-- 视频播放弹窗 -->
     <Teleport to="body">
@@ -805,8 +830,8 @@ onMounted(() => {
 }
 
 .video-title {
-  color: white;
-  font-size: 1.2rem;
+  color: #fff;
+  font-size: 1.25rem;
   font-weight: 600;
   text-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
@@ -815,6 +840,58 @@ onMounted(() => {
   width: 100%;
   height: 100%;
   object-fit: contain;
+  background: #000;
+  outline: none;
+}
+
+/* Image Modal Variants */
+.image-preview-modal {
+  padding: 40px;
+}
+
+.image-modal-content {
+  background: transparent;
+  box-shadow: none;
+  aspect-ratio: auto;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+.image-modal-header {
+  justify-content: flex-end;
+  background: transparent;
+  padding: 0;
+  top: -20px;
+  right: -20px;
+  left: auto;
+  opacity: 1;
+}
+
+.video-modal-content.image-modal-content:hover .video-modal-header {
+  opacity: 1;
+}
+
+.modal-image {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  border-radius: 12px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+@media (max-width: 768px) {
+  .video-modal {
+    padding: 16px;
+  }
+  
+  .image-preview-modal {
+    padding: 16px;
+  }
+  
+  .image-modal-header {
+    top: -10px;
+    right: -10px;
+  }
 }
 </style>
-
