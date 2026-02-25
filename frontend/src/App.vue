@@ -10,7 +10,7 @@ import {
   Close,
   VideoPlay
 } from '@element-plus/icons-vue'
-import { ElMessage, ElMessageBox } from 'element-plus'
+import { ElMessage } from 'element-plus'
 
 const scrollTo = (id: string) => {
   const el = document.getElementById(id)
