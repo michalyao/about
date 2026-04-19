@@ -46,7 +46,8 @@ const handleProjectClick = (project: typeof projects[0]) => {
     imageViewerVisible.value = true
   } else {
     // 视频类型：弹出视频播放器
-    currentVideo.value = Array.isArray(project.media) ? project.media[0] : project.media
+    const mediaUrl = Array.isArray(project.media) ? project.media[0] : project.media
+    currentVideo.value = mediaUrl || ''
     currentVideoTitle.value = project.title
     videoDialogVisible.value = true
   }
