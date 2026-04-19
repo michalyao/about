@@ -29,7 +29,8 @@ const copyQQ = () => {
 
 // 图片大图预览状态
 const imageViewerVisible = ref(false)
-const currentImage = ref('')
+const currentMediaList = ref<string[]>([])
+const currentMediaIndex = ref(0)
 
 // 视频弹窗状态
 const videoDialogVisible = ref(false)
@@ -39,12 +40,13 @@ const currentVideoTitle = ref('')
 // 项目点击处理
 const handleProjectClick = (project: typeof projects[0]) => {
   if (project.type === 'image') {
-    // 图片类型：查看大图
-    currentImage.value = project.media
+    // 图片类型：支持多图预览
+    currentMediaList.value = Array.isArray(project.media) ? project.media : [project.media]
+    currentMediaIndex.value = 0
     imageViewerVisible.value = true
   } else {
     // 视频类型：弹出视频播放器
-    currentVideo.value = project.media
+    currentVideo.value = Array.isArray(project.media) ? project.media[0] : project.media
     currentVideoTitle.value = project.title
     videoDialogVisible.value = true
   }
@@ -124,6 +126,20 @@ const projects = [
     desc: '一站式智慧旅游服务平台，支持景点门票预订、旅游路线推荐及攻略分享。',
     tags: ['SpringBoot', 'Vue3', 'MySQL', 'Redis'],
     media: 'images/智慧旅游平台.png',
+    type: 'image'
+  },
+  {
+    title: '智能招聘系统',
+    desc: '基于 AI 的智能化招聘管理平台，提供简历自动解析、人才画像分析、岗位智能匹配及多维度招聘数据看板。',
+    tags: ['SpringBoot', 'Vue3', 'MyBatis-Plus', 'MySQL'],
+    media: ['images/智能招聘系统01.png', 'images/智能招聘系统02.png'],
+    type: 'image'
+  },
+  {
+    title: '苹果叶片病害识别系统',
+    desc: '基于 YOLO 深度学习算法的苹果叶片病害检测项目，可精准识别黑星病、红蜘蛛等多种病害，支持图片与实时视频流检测。',
+    tags: ['Python', 'YOLOv8', 'PyTorch', 'Machine Learning'],
+    media: ['images/苹果叶片病害识别系统.png'],
     type: 'image'
   }
 ]
@@ -213,14 +229,14 @@ onMounted(() => {
           <div class="project-preview">
             <img 
               v-if="p.type === 'image'" 
-              :src="p.media" 
+              :src="Array.isArray(p.media) ? p.media[0] : p.media" 
               :alt="p.title" 
               class="project-image" 
               loading="lazy"
             />
             <video 
               v-else 
-              :src="p.media" 
+              :src="Array.isArray(p.media) ? p.media[0] : p.media" 
               class="project-video" 
               loop 
               muted 
@@ -290,13 +306,50 @@ onMounted(() => {
       <div v-if="imageViewerVisible" class="video-modal image-preview-modal" @click.self="imageViewerVisible = false">
         <div class="video-modal-content image-modal-content">
           <div class="video-modal-header image-modal-header">
+            <div class="image-counter" v-if="currentMediaList.length > 1">
+              {{ currentMediaIndex + 1 }} / {{ currentMediaList.length }}
+            </div>
             <el-button type="danger" circle :icon="Close" @click="imageViewerVisible = false" />
           </div>
-          <img 
-            :src="currentImage" 
-            class="modal-image" 
-            alt="Preview"
-          />
+          
+          <el-carousel 
+            v-if="currentMediaList.length > 1"
+            :initial-index="currentMediaIndex" 
+            trigger="click" 
+            height="85vh" 
+            class="modal-carousel"
+            @change="(idx: number) => currentMediaIndex = idx"
+            arrow="always"
+            :autoplay="false"
+          >
+            <el-carousel-item v-for="(img, index) in currentMediaList" :key="index">
+              <div class="carousel-image-wrapper">
+                <el-image 
+                  :src="img" 
+                  fit="contain" 
+                  class="modal-image"
+                >
+                  <template #placeholder>
+                    <div class="image-loading">加载中...</div>
+                  </template>
+                  <template #error>
+                    <div class="image-error">图片加载失败</div>
+                  </template>
+                </el-image>
+              </div>
+            </el-carousel-item>
+          </el-carousel>
+          
+          <el-image 
+            v-else
+            :src="currentMediaList[0]" 
+            fit="contain"
+            class="modal-image"
+          >
+            <template #error>
+              <div class="image-error">图片加载失败</div>
+            </template>
+          </el-image>
         </div>
       </div>
     </Teleport>
@@ -783,8 +836,8 @@ onMounted(() => {
 }
 </style>
 
-<style>
-/* Global Modal Styles (outside scoped) */
+<style lang="scss">
+/* Global Modal Styles */
 .video-modal {
   position: fixed;
   inset: 0;
@@ -808,6 +861,15 @@ onMounted(() => {
   display: flex;
   flex-direction: column;
   position: relative;
+  
+  &.image-modal-content {
+     background: transparent;
+     box-shadow: none;
+     aspect-ratio: auto;
+     display: block;
+     max-width: 1400px;
+     height: auto;
+  }
 }
 
 .video-modal-header {
@@ -823,10 +885,21 @@ onMounted(() => {
   z-index: 10;
   opacity: 0;
   transition: opacity 0.3s;
-}
-
-.video-modal-content:hover .video-modal-header {
-  opacity: 1;
+  
+  .video-modal-content:hover & {
+    opacity: 1;
+  }
+  
+  &.image-modal-header {
+    justify-content: flex-end;
+    background: transparent;
+    padding: 20px;
+    top: 0;
+    right: 0;
+    left: auto;
+    opacity: 1;
+    z-index: 100;
+  }
 }
 
 .video-title {
@@ -844,54 +917,96 @@ onMounted(() => {
   outline: none;
 }
 
-/* Image Modal Variants */
-.image-preview-modal {
-  padding: 40px;
-}
-
-.image-modal-content {
-  background: transparent;
-  box-shadow: none;
-  aspect-ratio: auto;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-}
-
-.image-modal-header {
-  justify-content: flex-end;
-  background: transparent;
-  padding: 0;
-  top: -20px;
-  right: -20px;
-  left: auto;
-  opacity: 1;
-}
-
-.video-modal-content.image-modal-content:hover .video-modal-header {
-  opacity: 1;
-}
-
 .modal-image {
-  max-width: 100%;
-  max-height: 100%;
-  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  max-height: 85vh;
   border-radius: 12px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  display: block;
+  margin: 0 auto;
+
+  /* Target the internal img of el-image */
+  img {
+    border-radius: 12px;
+  }
+}
+
+.image-loading, .image-error {
+  width: 100%;
+  height: 300px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #94a3b8;
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 12px;
+  font-size: 1.1rem;
+}
+
+.image-error {
+  color: var(--color-danger);
+}
+
+.image-counter {
+  color: #fff;
+  background: rgba(15, 23, 42, 0.8);
+  padding: 6px 18px;
+  border-radius: 20px;
+  font-size: 0.875rem;
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  margin-right: 12px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.modal-carousel {
+  width: 100%;
+  height: 85vh; /* Ensure physical height in CSS too */
+  
+  .el-carousel__container {
+    height: 100% !important;
+  }
+  
+  .carousel-image-wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 60px;
+  }
+
+  .el-carousel__arrow {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid rgba(255, 255, 255, 0.1) !important;
+    backdrop-filter: blur(4px);
+    width: 50px !important;
+    height: 50px !important;
+    font-size: 1.2rem !important;
+    
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.15) !important;
+      border-color: var(--color-primary) !important;
+    }
+  }
+
+  .el-carousel__indicators--outside {
+    margin-top: 20px;
+  }
 }
 
 @media (max-width: 768px) {
-  .video-modal {
-    padding: 16px;
-  }
-  
-  .image-preview-modal {
-    padding: 16px;
-  }
-  
+  .video-modal { padding: 16px; }
+  .image-preview-modal { padding: 16px; }
   .image-modal-header {
     top: -10px;
     right: -10px;
+  }
+  .modal-carousel .carousel-image-wrapper {
+    padding: 0 10px;
   }
 }
 </style>
