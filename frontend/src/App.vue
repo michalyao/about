@@ -8,7 +8,10 @@ import {
   Promotion,
   CopyDocument,
   Close,
-  VideoPlay
+  VideoPlay,
+  CollectionTag,
+  Reading,
+  Share
 } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 
@@ -155,8 +158,26 @@ const handleMouseMove = (e: MouseEvent) => {
   target.style.setProperty('--mouse-y', `${y}px`);
 };
 
+const brandFeatures = [
+  {
+    title: '深度解析',
+    desc: '从源码底层逻辑出发，用最直观的方式拆解复杂的技术概念。',
+    icon: Reading
+  },
+  {
+    title: '万行起步',
+    desc: '坚持“多写多思”的编程哲学，万行代码沉淀出一整套实战体系。',
+    icon: CollectionTag
+  },
+  {
+    title: '知识共享',
+    desc: '传播高质量编程干货，助力每一位开发者在技术的道路上更进一步。',
+    icon: Share
+  }
+]
+
 onMounted(() => {
-  const cards = document.querySelectorAll('.service-card, .project-card, .contact-card');
+  const cards = document.querySelectorAll('.service-card, .project-card, .contact-card, .bento-card');
   cards.forEach(card => {
     (card as HTMLElement).addEventListener('mousemove', handleMouseMove);
   });
@@ -167,9 +188,10 @@ onMounted(() => {
   <div class="main-container">
     <!-- Navbar -->
     <nav class="navbar">
-      <div class="logo">WanHeng.DEV</div>
+      <div class="logo">万行<span>说编程</span></div>
       <div class="nav-links">
         <a @click="scrollTo('home')">首页</a>
+        <a @click="scrollTo('brand')">品牌</a>
         <a @click="scrollTo('services')">服务</a>
         <a @click="scrollTo('portfolio')">作品</a>
         <a @click="scrollTo('contact')">联系</a>
@@ -182,12 +204,12 @@ onMounted(() => {
     <!-- Hero Section -->
     <section id="home" class="hero">
       <div class="hero-content">
-        <div class="hero-badge-top">🚀 专业开发</div>
+        <div class="hero-badge-top">🚀 万行说编程 · 官方站点</div>
         <h1 class="hero-title">
           让想法变成 <span class="highlight">现实</span>
         </h1>
         <p class="hero-subtitle">
-          专注大学生程序辅导 | 全栈开发 | 技术咨询
+          万行代码筑基，匠心解读编程。专注大学生程序辅导 | 全栈开发 | 技术咨询
         </p>
         <div class="hero-badges">
           <el-tag effect="dark" round>⚡️ 快速交付</el-tag>
@@ -205,6 +227,42 @@ onMounted(() => {
       </div>
       <div class="hero-bg-glow"></div>
       <div class="hero-bg-glow-secondary"></div>
+    </section>
+
+    <!-- Brand Story -->
+    <section id="brand" class="section brand-story">
+      <div class="brand-container">
+        <div class="brand-main">
+          <div class="brand-label">BRAND SPIRIT</div>
+          <h2 class="brand-title">为什么选择 <span class="text-gradient">万行说编程</span>？</h2>
+          <p class="brand-desc">
+            “万行”不只是一个数字，更是一种追求卓越的态度。每一行代码都承载着逻辑的严密性与技术的艺术感。致力于将枯燥的语法转化为生动的实践，让每一位初学者都能在“万行”的积累中找到编程的乐趣。
+          </p>
+          <div class="brand-stats">
+            <div class="stat-item">
+              <span class="stat-num">100+</span>
+              <span class="stat-label">辅导项目</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-num">10k+</span>
+              <span class="stat-label">代码沉淀</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-num">24h</span>
+              <span class="stat-label">快速响应</span>
+            </div>
+          </div>
+        </div>
+        <div class="brand-grid">
+          <div v-for="feat in brandFeatures" :key="feat.title" class="bento-card">
+            <div class="feat-icon">
+              <component :is="feat.icon" />
+            </div>
+            <h4>{{ feat.title }}</h4>
+            <p>{{ feat.desc }}</p>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Services -->
@@ -299,7 +357,7 @@ onMounted(() => {
     </section>
 
     <footer class="footer">
-      <p>© 2026 YAO.DEV | 专注于高质量程序设计与软件开发</p>
+      <p>© 2026 万行说编程 | 专注于高质量程序设计与软件开发</p>
     </footer>
 
     <!-- 图片预览弹窗 -->
@@ -454,8 +512,13 @@ onMounted(() => {
     font-size: 1.5rem;
     font-weight: 800;
     letter-spacing: -0.5px;
-    @include m.text-gradient;
+    color: var(--text-main);
     cursor: pointer;
+    
+    span {
+      @include m.text-gradient;
+      margin-left: 2px;
+    }
   }
 
   .nav-links {
@@ -835,6 +898,117 @@ onMounted(() => {
   color: var(--color-primary);
   font-weight: 600;
 }
+
+/* Brand Story Section Styles */
+.brand-story {
+  .brand-container {
+    display: grid;
+    gap: var(--space-8);
+    grid-template-columns: 1fr;
+    
+    @include m.lg {
+      grid-template-columns: 1fr 1fr;
+      align-items: center;
+    }
+  }
+  
+  .brand-main {
+    .brand-label {
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: var(--color-primary);
+      letter-spacing: 2px;
+      margin-bottom: var(--space-3);
+    }
+    
+    .brand-title {
+      font-size: 2.8rem;
+      line-height: 1.2;
+      margin-bottom: var(--space-4);
+      
+      .text-gradient { @include m.text-gradient; }
+    }
+    
+    .brand-desc {
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      margin-bottom: var(--space-6);
+    }
+    
+    .brand-stats {
+      display: flex;
+      gap: var(--space-6);
+      
+      .stat-item {
+        display: flex;
+        flex-direction: column;
+        
+        .stat-num {
+          font-size: 2rem;
+          font-weight: 800;
+          color: var(--text-main);
+        }
+        
+        .stat-label {
+          font-size: 0.875rem;
+          color: var(--text-tertiary);
+          text-transform: uppercase;
+        }
+      }
+    }
+  }
+  
+  .brand-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: var(--space-3);
+    
+    .bento-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius-lg);
+      padding: var(--space-5);
+      @include m.hover-lift;
+      position: relative;
+      overflow: hidden;
+      
+      &::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(300px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(59, 130, 246, 0.1), transparent 40%);
+        opacity: 0;
+        transition: opacity 0.5s;
+      }
+      
+      &:hover::after { opacity: 1; }
+      
+      .feat-icon {
+        width: 48px;
+        height: 48px;
+        background: var(--color-primary-fade);
+        border-radius: var(--radius-md);
+        @include m.flex-center;
+        color: var(--color-primary);
+        font-size: 24px;
+        margin-bottom: var(--space-4);
+      }
+      
+      h4 {
+        font-size: 1.2rem;
+        color: var(--text-main);
+        margin-bottom: var(--space-2);
+      }
+      
+      p {
+        font-size: 0.9rem;
+        color: var(--text-secondary);
+        line-height: 1.5;
+      }
+    }
+  }
+}
 </style>
 
 <style lang="scss">
@@ -998,6 +1172,8 @@ onMounted(() => {
     margin-top: 20px;
   }
 }
+
+
 
 @media (max-width: 768px) {
   .video-modal { padding: 16px; }
